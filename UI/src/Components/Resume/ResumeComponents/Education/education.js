@@ -46,7 +46,6 @@ const Education = ()=>{
             <Button variant="contained" color="primary" type="button" onClick={addEdu}>
                 Add Education
             </Button>
-            
             </article>
     )
 };
