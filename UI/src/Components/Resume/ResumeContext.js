@@ -5,8 +5,9 @@ export const ResumeContext = createContext();
 
 export const ResumeProvider = (props) => {
     const [resume, setResume] = useState(
-        {header:{name:"",email:"",phone:"",address:""},skills:[],education:[{organization:"",date:"",details:""}]}
+        {header:{name:"",email:"",phone:"",address:""},skills:[],education:[],}
     )
+
 
     return (
         <ResumeContext.Provider value={[resume,setResume]}>

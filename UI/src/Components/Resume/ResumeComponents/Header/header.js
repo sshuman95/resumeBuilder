@@ -61,7 +61,7 @@ const Header = ()=>{
     return(
     <header className='resumeHead'>
         <h1 style={{color:'rgba(30,40,11,.7)'}}>{inputs.name || "Your Name here"}</h1>
-       {edit? <form onSubmit={handleSave} className={classes.form}>
+       {edit && buttons? <form onSubmit={handleSave} className={classes.form}>
         <TextField 
           id="name-textArea"
           label="Full Name"

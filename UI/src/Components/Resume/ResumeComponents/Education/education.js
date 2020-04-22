@@ -30,38 +30,39 @@ const useStyles = makeStyles((theme) => ({
 
 
 const Education = ()=>{
-    const classes = useStyles();
-    const [resume,setResume] =useContext(ResumeContext)
-    const [buttons] =useContext(ButtonContext)
-    const [edu, setEdu] = useState([]);
-    const addEdu = (event) => {
-            event.persist();
-            setEdu([...edu,{organization:"",date:"",details:""}]);
-            resume.education = edu
-            setResume(resume);
-            console.log(resume)
-    }
+  const classes = useStyles();
+  const [resume,setResume] =useContext(ResumeContext);
+  const [edit, setEdit] = useState(false);
+  const [buttons] =useContext(ButtonContext)
+  const [edu, setEdu] = useState([]);
 
-    const editEdu = (i,n,val) =>{
-        edu[i][n] = val;
-        setEdu([...edu]);
-        resume.education = edu
-        setResume(resume);
-        console.log(resume)
-    }
+  const addEdu = (event) => {
+    setResume({ ...resume, education: [...resume.education, {organization:"",date:"",details:''}] });
 
-    return(
-        <article className='education'>
-        <h2>Education</h2>
-                {edu.length>0?edu.map((e,i)=>{
-                    return(
-                            <EduForm key={i} e={e} i={i} edit={editEdu}/>)
-                }):<h1>Add Education</h1>}
-           {buttons?<Button className={classes.btn} variant="contained" color="primary" type="button" onClick={addEdu}>
-                Add Education
-            </Button>:''}
-            </article>
-    )
+}
+
+const editEdu = (i,org, date, details) =>{
+console.log(i,org,date,details)
+resume.education[i].organization = org;
+resume.education[i].date = date;
+resume.education[i].details = details;
+}
+
+  return(
+      <article className='education'>
+      <h2>Education</h2>
+              {resume.education.length!==0?resume.education.map((e,i)=>{
+                  return(
+                   
+                    <EduForm key={i} e={e} i={i} edit={editEdu}/>
+                    )
+              }):<h1>Add Education</h1>}
+         {buttons?<Button className={classes.btn} variant="contained" color="primary" type="button" onClick={addEdu}>
+              Add Education
+          </Button>:''}
+          
+          </article>
+  )
 };
 
 export default Education;

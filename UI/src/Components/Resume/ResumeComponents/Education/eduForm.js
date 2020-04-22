@@ -30,23 +30,38 @@ const EduForm = (props)=>{
     const classes = useStyles();
         
     const [edit, setEdit] = useState(false);
+    const [organization, setOrganization] = useState('')
+    const [date, setDate] = useState('')
+    const [details, setDetails] = useState('')
     const [buttons] = useContext(ButtonContext);
 
     const handleEdit = (event) => {
         event.preventDefault();
         setEdit(!edit)
       }
+
+      const handleOrganizationChange = (event) =>{
+          setOrganization(event.target.value)
+      }
+
+      const handleDateChange = (event) =>{
+        setDate(event.target.value)
+    }
+
+    const handleDetailsChange = (event) =>{
+      setDetails(event.target.value)
+  }
     return(
      <section>
-         {edit?<form>
+         {edit && buttons?<form onSubmit={(event)=>{event.preventDefault();props.edit(props.i,organization,date,details);setEdit(!edit)}}>
          <TextField 
           id="organization-textArea"
           label="Organization"
           placeholder="Placeholder"
           multiline
           name="organization"
-          onChange={(event)=>props.edit(props.i,event.target.name,event.target.value)} 
-          value={props.e.organization}
+          onChange={handleOrganizationChange} 
+          value={organization}
           />
           <TextField 
           id="date-textArea"
@@ -54,8 +69,8 @@ const EduForm = (props)=>{
           placeholder="Placeholder"
           multiline
           name="date"
-          onChange={(event)=>props.edit(props.i,event.target.name,event.target.value)} 
-          value={props.e.date}
+          onChange={handleDateChange} 
+          value={date}
           />
           <TextField 
           id="details-textArea"
@@ -63,10 +78,10 @@ const EduForm = (props)=>{
           placeholder="Placeholder"
           multiline
           name="details"
-          onChange={(event)=>props.edit(props.i,event.target.name,event.target.value)} 
-          value={props.e.details}
+          onChange={handleDetailsChange} 
+          value={details}
           />
-         {buttons?<Button style={{marginTop:"5px"}} className={classes.btn} variant="contained" color="primary" onClick={handleEdit} type="button">
+         {buttons?<Button style={{marginTop:"5px"}} className={classes.btn} variant="contained" color="primary" type="submit">
             Save Edit
         </Button>:""}
           </form>:

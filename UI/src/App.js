@@ -3,11 +3,12 @@ import './App.css';
 import Resume from "./Components/Resume/resume";
 import { ButtonProvider } from "./Components/Resume/ButtonContext";
 import { ButtonController } from "./Components/ButtonController/buttonController";
-
+import { ResumeProvider, } from "./Components/Resume//ResumeContext";
 function App() {
   
 
   return (
+    <ResumeProvider>
     <ButtonProvider>
     <div className="App">
       <header className="App-header">
@@ -22,6 +23,7 @@ function App() {
       </main>
     </div>
     </ButtonProvider>
+    </ResumeProvider>
   );
 }
 

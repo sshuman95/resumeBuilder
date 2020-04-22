@@ -36,6 +36,7 @@ const ExpForm = (props)=>{
       event.preventDefault();
       console.log(event.target.value)
       setDuty(event.target.value);
+      console.log(props.e)
     }
 
     const handleEdit = (event) => {

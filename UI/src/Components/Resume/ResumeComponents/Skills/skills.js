@@ -36,6 +36,7 @@ const Skills = ()=>{
         resume.skills.push(skill)
         setResume(resume);
         setSkill('');
+        console.log(resume)
       } else {
         return
       }
@@ -53,11 +54,11 @@ const Skills = ()=>{
         <h2>Skills</h2>
         <section>
             <ul>
-              {resume.skills.map((s,i)=>{
+              {resume.skills?resume.skills.map((s,i)=>{
                   return(
                       <li key={i}>{s}</li>
                   )
-              })}
+              }):''}
             </ul>
         </section>
         {buttons?<form onSubmit={addSkill}>
