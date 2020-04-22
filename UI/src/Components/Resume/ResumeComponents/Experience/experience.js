@@ -1,8 +1,9 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, {  useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ExpForm from "./expForm";
+import { ButtonContext } from "../../ButtonContext";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,7 +17,10 @@ const useStyles = makeStyles((theme) => ({
       flexDirection:"column",
       width:"60%",
 
-  }
+  },
+ btn:{
+     width:170
+ }
 }));
 
 
@@ -26,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 const Experience = ()=>{
     const classes = useStyles();
     const [exp, setExp] = useState([]);
+    const [buttons] = useContext(ButtonContext);
     const addExp = (event) => {
             event.persist();
             setExp([...exp,{company:"",title:"",location:"",duty:[]}]);
@@ -51,12 +56,14 @@ const Experience = ()=>{
         <section>
                 {exp.length>0?exp.map((e,i)=>{
                     return(
-                            <ExpForm e={e} i={i} add={addDuty} edit={editExp}/>)
+                            <ExpForm buttons={buttons} e={e} i={i} add={addDuty} edit={editExp}/>)
                 }):<h1>Add Experience</h1>}
         </section>
-            <Button variant="contained" color="primary" type="button" onClick={addExp}>
+            {buttons?
+            <Button className={classes.btn}  variant="contained" color="primary" type="button" onClick={addExp}>
                 Add Experience
-            </Button>
+            </Button>:
+            ""}
         </article>
     )
 };

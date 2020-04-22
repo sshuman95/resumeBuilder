@@ -5,8 +5,8 @@
 .resumeMain{
     display:grid;
     grid-template-columns: repeat(12,1fr);
-    grid-template-columns: repeat(12,1fr);
-    
+    grid-template-rows: repeat(auto,1fr);
+    margin:0 auto;
 }
 
 .resumeHead{

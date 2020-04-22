@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, {  useState, Fragment } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
       flexDirection:"column",
       width:"60%",
 
+  },
+  btn:{
+    marginBottom:5,
+    width:170
   }
 }));
 //{company:"",title:"",location:"",duty:[]}]);
@@ -77,10 +81,10 @@ const ExpForm = (props)=>{
           onChange={handleChange} 
           value={dutyToAdd}
           />
-        <Button variant="contained"  color="primary" onClick={()=>{props.add(props.i,dutyToAdd); setDuty('')}} type="button">
+        <Button variant="contained" style={{marginTop:'5px'}} className={classes.btn}  color="primary" onClick={()=>{props.add(props.i,dutyToAdd); setDuty('')}} type="button">
             Add Duty
         </Button>
-          <Button variant="contained" color="primary" onClick={handleEdit} type="button">
+          <Button variant="contained" className={classes.btn} color="primary" onClick={handleEdit} type="button">
            Save Experience
         </Button>
           </form>:
@@ -94,9 +98,9 @@ const ExpForm = (props)=>{
               )
             })}
          </ul>
-        <Button variant="contained" color="primary" onClick={handleEdit} type="button">
+            {props.buttons?<Button className={classes.btn} variant="contained" color="primary" onClick={handleEdit} type="button">
             Edit Experience
-        </Button>
+        </Button>:''}
         </Fragment>}
     </section>)
 };

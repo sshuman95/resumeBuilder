@@ -1,8 +1,10 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import EduForm from "./eduForm";
+import { ButtonContext } from "../../ButtonContext";
+import { ResumeContext } from "../../ResumeContext";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
       flexDirection:"column",
       width:"60%",
 
+  },
+  btn:{
+    marginTop:5,
+    width:155
   }
 }));
 
@@ -25,15 +31,23 @@ const useStyles = makeStyles((theme) => ({
 
 const Education = ()=>{
     const classes = useStyles();
+    const [resume,setResume] =useContext(ResumeContext)
+    const [buttons] =useContext(ButtonContext)
     const [edu, setEdu] = useState([]);
     const addEdu = (event) => {
             event.persist();
             setEdu([...edu,{organization:"",date:"",details:""}]);
+            resume.education = edu
+            setResume(resume);
+            console.log(resume)
     }
 
     const editEdu = (i,n,val) =>{
         edu[i][n] = val;
         setEdu([...edu]);
+        resume.education = edu
+        setResume(resume);
+        console.log(resume)
     }
 
     return(
@@ -41,11 +55,11 @@ const Education = ()=>{
         <h2>Education</h2>
                 {edu.length>0?edu.map((e,i)=>{
                     return(
-                            <EduForm e={e} i={i} edit={editEdu}/>)
+                            <EduForm key={i} e={e} i={i} edit={editEdu}/>)
                 }):<h1>Add Education</h1>}
-            <Button variant="contained" color="primary" type="button" onClick={addEdu}>
+           {buttons?<Button className={classes.btn} variant="contained" color="primary" type="button" onClick={addEdu}>
                 Add Education
-            </Button>
+            </Button>:''}
             </article>
     )
 };

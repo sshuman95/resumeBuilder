@@ -1,14 +1,19 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Resume from "./Components/Resume/resume";
+import { ButtonProvider } from "./Components/Resume/ButtonContext";
+import { ButtonController } from "./Components/ButtonController/buttonController";
 
 function App() {
+  
+
   return (
+    <ButtonProvider>
     <div className="App">
       <header className="App-header">
         <h2>Free Resume Builder</h2>
         <h3>No Sign-up Required</h3>
+        <ButtonController/>
       </header>
       <main>
         <article>
@@ -16,6 +21,7 @@ function App() {
         </article>
       </main>
     </div>
+    </ButtonProvider>
   );
 }
 

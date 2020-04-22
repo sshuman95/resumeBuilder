@@ -1,7 +1,9 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { ButtonContext } from "../../ButtonContext";
+import { ResumeContext } from "../../ResumeContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,14 +12,10 @@ const useStyles = makeStyles((theme) => ({
       width: '25ch',
     },
   },
-  form:{
-      display:'flex',
-      flexDirection:"column",
-      width:"60%",
-
+  btn:{
+    marginTop:5
   }
 }));
-
 
 
 
@@ -25,20 +23,23 @@ const useStyles = makeStyles((theme) => ({
 const Skills = ()=>{
     const classes = useStyles();
     const [skill, setSkill] = useState('');
-    const [skillList, setSkillList] = useState([]);
+    const [buttons] = useContext(ButtonContext);
+    const [resume,setResume] = useContext(ResumeContext);
     const handleEdit = (event) => {
       event.preventDefault();
-      console.log(event.target.value)
       setSkill(event.target.value);
     }
 
     const addSkill = (event) => {
       event.preventDefault();
-      event.persist();
-      if(!skill){
+      if(skill){
+        resume.skills.push(skill)
+        setResume(resume);
+        setSkill('');
+      } else {
         return
       }
-      setSkillList([...skillList,skill]);
+    
 }
 
 /*    const editEdu = (i,n,val) =>{
@@ -47,19 +48,20 @@ const Skills = ()=>{
     }*/
 
     return(
+      
         <article className='skills'>
         <h2>Skills</h2>
         <section>
             <ul>
-              {skillList.map((s,i)=>{
+              {resume.skills.map((s,i)=>{
                   return(
                       <li key={i}>{s}</li>
                   )
               })}
             </ul>
         </section>
-        <form onSubmit={addSkill}>
-        <TextField 
+        {buttons?<form onSubmit={addSkill}>
+          <TextField 
           id="skill-textArea"
           label="Skill"
           placeholder="Placeholder"
@@ -68,10 +70,10 @@ const Skills = ()=>{
           onChange={handleEdit} 
           value={skill}
           />
-        <Button variant="contained" color="primary" type="button" type="submit">
+        <Button variant="contained" className={classes.btn} color="primary" type="submit">
                 Add Skill
             </Button>
-            </form>
+            </form>:''}
     </article>
     )
 };
