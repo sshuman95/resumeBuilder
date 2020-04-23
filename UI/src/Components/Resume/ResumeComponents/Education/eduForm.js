@@ -28,12 +28,12 @@ const useStyles = makeStyles((theme) => ({
 
 const EduForm = (props)=>{
     const classes = useStyles();
-        
+    const [buttons] = useContext(ButtonContext);
     const [edit, setEdit] = useState(false);
     const [organization, setOrganization] = useState('')
     const [date, setDate] = useState('')
     const [details, setDetails] = useState('')
-    const [buttons] = useContext(ButtonContext);
+   
 
     const handleEdit = (event) => {
         event.preventDefault();

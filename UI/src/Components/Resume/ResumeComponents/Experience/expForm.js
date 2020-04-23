@@ -1,8 +1,8 @@
-import React, {  useState, Fragment } from 'react';
+import React, {  useState, Fragment,useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
+import { ButtonContext } from "../../ButtonContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     width:170
   }
 }));
-//{company:"",title:"",location:"",duty:[]}]);
+
 
 
 
@@ -30,30 +30,55 @@ const useStyles = makeStyles((theme) => ({
 const ExpForm = (props)=>{
     const classes = useStyles();
     const [edit, setEdit] = useState(false);
-    const [dutyToAdd, setDuty] = useState('')
+    const [dutyToAdd, setDutyToAdd] = useState('')
+    const [duty, setDuty] = useState([])
+    const [company, setCompany] = useState('')
+    const [location, setLocation] = useState('')
+    const [title, setTitle] = useState('')
+    const [buttons] = useContext(ButtonContext)
 
     const handleChange = (event) => {
       event.preventDefault();
-      console.log(event.target.value)
-      setDuty(event.target.value);
-      console.log(props.e)
+      setDutyToAdd(event.target.value);
     }
+
+    const addDuty = (event) => {
+      event.preventDefault();
+      let dutyArr = duty;
+      dutyArr.push(dutyToAdd);
+      setDuty(dutyArr)
+      setDutyToAdd('')
+  }
 
     const handleEdit = (event) => {
         event.preventDefault();
         setEdit(!edit)
-      }
+    }
+
+    const handleCompanyChange = (event) =>{
+      setCompany(event.target.value)
+    }
+  
+    const handleLocationChange = (event) =>{
+        setLocation(event.target.value)
+    }
+  
+    const handleTitleChange = (event) =>{
+        setTitle(event.target.value)
+    }
+
+
     return(
      <section>
-         {edit?<form className={classes.form}>
+         {edit && buttons?<form className={classes.form} onSubmit={(event)=>{event.preventDefault();props.edit(props.i,company,location,title,duty);setEdit(!edit)}}>
          <TextField 
           id="company-textArea"
           label="Company"
           placeholder="Placeholder"
           multiline
           name="company"
-          onChange={(event)=>props.edit(props.i,event.target.name,event.target.value)} 
-          value={props.e.company}
+          onChange={handleCompanyChange} 
+          value={company}
           />
           <TextField 
           id="location-textArea"
@@ -61,8 +86,8 @@ const ExpForm = (props)=>{
           placeholder="Placeholder"
           multiline
           name="location"
-          onChange={(event)=>props.edit(props.i,event.target.name,event.target.value)} 
-          value={props.e.location}
+          onChange={handleLocationChange} 
+          value={location}
           />
           <TextField 
           id="title-textArea"
@@ -70,8 +95,8 @@ const ExpForm = (props)=>{
           placeholder="Placeholder"
           multiline
           name="title"
-          onChange={(event)=>props.edit(props.i,event.target.name,event.target.value)} 
-          value={props.e.title}
+          onChange={handleTitleChange} 
+          value={title}
           />
           <TextField 
           id="duty-textArea"
@@ -82,10 +107,11 @@ const ExpForm = (props)=>{
           onChange={handleChange} 
           value={dutyToAdd}
           />
-        <Button variant="contained" style={{marginTop:'5px'}} className={classes.btn}  color="primary" onClick={()=>{props.add(props.i,dutyToAdd); setDuty('')}} type="button">
+          <p># of duties: {duty.length}</p>
+        <Button variant="contained" style={{marginTop:'5px'}} className={classes.btn}  color="primary" onClick={addDuty} type="button">
             Add Duty
         </Button>
-          <Button variant="contained" className={classes.btn} color="primary" onClick={handleEdit} type="button">
+          <Button variant="contained" className={classes.btn} color="primary" type="submit">
            Save Experience
         </Button>
           </form>:

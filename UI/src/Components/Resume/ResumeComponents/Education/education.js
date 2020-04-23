@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import EduForm from "./eduForm";
@@ -32,9 +32,8 @@ const useStyles = makeStyles((theme) => ({
 const Education = ()=>{
   const classes = useStyles();
   const [resume,setResume] =useContext(ResumeContext);
-  const [edit, setEdit] = useState(false);
   const [buttons] =useContext(ButtonContext)
-  const [edu, setEdu] = useState([]);
+
 
   const addEdu = (event) => {
     setResume({ ...resume, education: [...resume.education, {organization:"",date:"",details:''}] });
@@ -42,10 +41,10 @@ const Education = ()=>{
 }
 
 const editEdu = (i,org, date, details) =>{
-console.log(i,org,date,details)
 resume.education[i].organization = org;
 resume.education[i].date = date;
 resume.education[i].details = details;
+setResume(resume)
 }
 
   return(

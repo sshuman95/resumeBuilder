@@ -16,10 +16,16 @@ export const ButtonController = () => {
 
     const handleClick = () => {
         setButtons(!buttons)
+        
     }
+
+    
+  
 
     return (
       buttons?
-      <Button className={classes.btn} variant="contained" color="primary" onClick={handleClick} type="button">Remove Buttons</Button>:<Button className={classes.btn} variant="contained" color="primary" onClick={handleClick} type="button"> Add Buttons </Button>
-    );
+      <Button className={classes.btn} variant="contained" color="primary" onClick={handleClick} type="button">Remove Buttons</Button>
+      :<Button className={classes.btn} variant="contained" color="primary" onClick={handleClick} type="button"> Add Buttons </Button>
+     
+    )
 }

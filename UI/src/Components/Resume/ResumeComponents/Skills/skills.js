@@ -36,17 +36,12 @@ const Skills = ()=>{
         resume.skills.push(skill)
         setResume(resume);
         setSkill('');
-        console.log(resume)
       } else {
         return
       }
     
 }
 
-/*    const editEdu = (i,n,val) =>{
-        edu[i][n] = val;
-        setEdu([...edu]);
-    }*/
 
     return(
       

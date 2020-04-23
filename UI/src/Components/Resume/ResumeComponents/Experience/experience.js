@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import ExpForm from "./expForm";
 import { ButtonContext } from "../../ButtonContext";
-
+import { ResumeContext } from "../../ResumeContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,15 +31,19 @@ const Experience = ()=>{
     const classes = useStyles();
     const [exp, setExp] = useState([]);
     const [buttons] = useContext(ButtonContext);
+    const [resume,setResume] =useContext(ResumeContext);
     const addExp = (event) => {
             event.persist();
-            setExp([...exp,{company:"",title:"",location:"",duty:[]}]);
+            setResume({ ...resume, experience: [...resume.experience, {company:"",title:"",location:"",duty:[]}] });
     }
 
-    const editExp = (i,n,val) =>{
-        exp[i][n] = val;
-        setExp([...exp]);
-    }
+    const editExp = (i,company, title, location,duty) =>{
+        resume.experience[i].company = company;
+        resume.experience[i].title = title;
+        resume.experience[i].location = location;
+        resume.experience[i].duty = duty;
+        setResume(resume)
+        }
 
     const addDuty = (i,val) =>{
         if(val){
@@ -50,11 +54,13 @@ const Experience = ()=>{
         }
     }
 
+
+
     return(
         <article className='exp'>
         <h2>Experience</h2>
         <section>
-                {exp.length>0?exp.map((e,i)=>{
+                {resume.experience.length>0?resume.experience.map((e,i)=>{
                     return(
                             <ExpForm buttons={buttons} e={e} i={i} add={addDuty} edit={editExp}/>)
                 }):<h1>Add Experience</h1>}
@@ -70,11 +76,7 @@ const Experience = ()=>{
 
 export default Experience;
 
-/* <section>
-                        <h3>{company} - {location} </h3>
-                        <h5>{title}</h5>
-                        <ul>
-                            <li>{listItem}</li>
-                            
-                        </ul>
-                    </section> */
+/*  const addEdu = (event) => {
+    setResume({ ...resume, experience: [...resume.experience, {company:"",title:"",location:"",duty:[]}] });
+
+}*/

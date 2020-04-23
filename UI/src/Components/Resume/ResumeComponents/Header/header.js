@@ -43,7 +43,6 @@ const Header = ()=>{
 
     const handleEdit = (event) => {
         event.preventDefault();
-        console.log(resume)
         setEdit(!edit)
       };
 
@@ -60,7 +59,7 @@ const Header = ()=>{
 
     return(
     <header className='resumeHead'>
-        <h1 style={{color:'rgba(30,40,11,.7)'}}>{inputs.name || "Your Name here"}</h1>
+        <h1 style={{color:'rgba(30,40,11,.7)'}}>{resume.header.name || "Your Name here"}</h1>
        {edit && buttons? <form onSubmit={handleSave} className={classes.form}>
         <TextField 
           id="name-textArea"
@@ -104,9 +103,9 @@ const Header = ()=>{
         </form>:
         <Fragment>
       
-            <h4>{inputs.email || "Your Email here"}</h4>
-            <h4>{inputs.phone || "Your Phone # here"}</h4>
-            <h4>{inputs.address || "Your Address here"}</h4>
+            <h4>{resume.header.email || "Your Email here"}</h4>
+            <h4>{resume.header.phone || "Your Phone # here"}</h4>
+            <h4>{resume.header.address || "Your Address here"}</h4>
            {buttons?<Button variant="contained" color="primary" type="button" className={classes.btn} onClick={handleEdit}>
                 Edit Header
             </Button>:''}
