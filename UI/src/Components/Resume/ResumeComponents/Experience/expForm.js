@@ -45,9 +45,13 @@ const ExpForm = (props)=>{
     const addDuty = (event) => {
       event.preventDefault();
       let dutyArr = duty;
-      dutyArr.push(dutyToAdd);
-      setDuty(dutyArr)
-      setDutyToAdd('')
+      if(dutyToAdd){
+        dutyArr.push(dutyToAdd);
+        setDuty(dutyArr)
+        setDutyToAdd('')
+      } else {
+        return
+      }
   }
 
     const handleEdit = (event) => {
@@ -107,10 +111,16 @@ const ExpForm = (props)=>{
           onChange={handleChange} 
           value={dutyToAdd}
           />
-          <p># of duties: {duty.length}</p>
-        <Button variant="contained" style={{marginTop:'5px'}} className={classes.btn}  color="primary" onClick={addDuty} type="button">
+          <Button variant="contained" style={{marginTop:'5px'}} className={classes.btn}  color="primary" onClick={addDuty} type="button">
             Add Duty
-        </Button>
+          </Button>
+           <ul>
+            {duty.map(d=>{
+              return (
+                <li>{d}</li>
+              )
+            })}
+         </ul>
           <Button variant="contained" className={classes.btn} color="primary" type="submit">
            Save Experience
         </Button>

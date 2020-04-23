@@ -4,9 +4,10 @@ import Resume from "./Components/Resume/resume";
 import { ButtonProvider } from "./Components/Resume/ButtonContext";
 import { ButtonController } from "./Components/ButtonController/buttonController";
 import { ResumeProvider, } from "./Components/Resume//ResumeContext";
-function App() {
-  
+import Save from "./Components/Save/save";
 
+
+function App() {
   return (
     <ResumeProvider>
     <ButtonProvider>
@@ -15,6 +16,7 @@ function App() {
         <h2>Free Resume Builder</h2>
         <h3>No Sign-up Required</h3>
         <ButtonController/>
+        <Save/>
       </header>
       <main>
         <article>

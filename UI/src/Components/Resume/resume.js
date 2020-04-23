@@ -7,6 +7,8 @@ import Education from "./ResumeComponents/Education/education";
 import Skills from "./ResumeComponents/Skills/skills";
 import Experience from "./ResumeComponents/Experience/experience";
 
+
+
 const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
