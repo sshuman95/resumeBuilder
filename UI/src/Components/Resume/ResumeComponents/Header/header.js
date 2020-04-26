@@ -1,8 +1,8 @@
-import React, { useState, Fragment, useContext } from 'react';
+import React, { useState, Fragment, useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-//     const value = useContext(ButtonContext);
+import { UserContext } from "../../UserContext";
 
  import { ButtonContext } from "../../ButtonContext";
  import { ResumeContext } from "../../ResumeContext";
@@ -35,7 +35,23 @@ const Header = ()=>{
     const [edit, setEdit] = useState(false);
     const [buttons] = useContext(ButtonContext);
     const [resume,setResume] = useContext(ResumeContext);
+    const [user] = useContext(UserContext)
 
+ useEffect(()=>{
+   if(user){
+     let test = {
+       name:resume.header.name,
+       email:resume.header.email,
+       phone:resume.header.phone,
+       address:resume.header.address
+     };
+     setInputs(test)
+   } else {
+     setInputs({})
+   }
+ },[user])
+
+ 
     const handleInputChange = (event) => {
         event.persist();
         setInputs(inputs => ({...inputs, [event.target.name]: event.target.value}));
@@ -46,13 +62,15 @@ const Header = ()=>{
         setEdit(!edit)
       };
 
+
       const handleSave = (event) => {
         event.preventDefault();
-        resume.header.name = inputs.name;
-        resume.header.email = inputs.email;
-        resume.header.phone = inputs.phone;
-        resume.header.address = inputs.address;
-        setResume(resume)
+        let resumeHead = resume;
+        resumeHead.header.name = inputs.name;
+        resumeHead.header.email = inputs.email;
+        resumeHead.header.phone = inputs.phone;
+        resumeHead.header.address = inputs.address;
+        setResume(resumeHead)
         setEdit(!edit)
       }
 

@@ -25,6 +25,8 @@ const Skills = ()=>{
     const [skill, setSkill] = useState('');
     const [buttons] = useContext(ButtonContext);
     const [resume,setResume] = useContext(ResumeContext);
+
+    
     const handleEdit = (event) => {
       event.preventDefault();
       setSkill(event.target.value);
@@ -32,9 +34,10 @@ const Skills = ()=>{
 
     const addSkill = (event) => {
       event.preventDefault();
+      let skillsToAdd = resume;
       if(skill){
-        resume.skills.push(skill)
-        setResume(resume);
+        skillsToAdd.skills.push(skill)
+        setResume(skillsToAdd);
         setSkill('');
       } else {
         return

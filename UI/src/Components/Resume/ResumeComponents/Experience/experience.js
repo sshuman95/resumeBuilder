@@ -38,18 +38,20 @@ const Experience = ()=>{
     }
 
     const editExp = (i,company, title, location,duty) =>{
-        resume.experience[i].company = company;
-        resume.experience[i].title = title;
-        resume.experience[i].location = location;
-        resume.experience[i].duty = duty;
-        setResume(resume)
+        let newExp = resume;
+        newExp.experience[i].company = company;
+        newExp.experience[i].title = title;
+        newExp.experience[i].location = location;
+        newExp.experience[i].duty = duty;
+        setResume(newExp)
         }
 
     const addDuty = (i,val) =>{
+        let newDuty = exp;
         if(val){
-        exp[i].duty.push(val);
-        console.log(exp)
-        setExp([...exp])} else {
+        newDuty[i].duty.push(val);
+        setExp(newDuty)
+        } else {
             return
         }
     }
@@ -76,7 +78,3 @@ const Experience = ()=>{
 
 export default Experience;
 
-/*  const addEdu = (event) => {
-    setResume({ ...resume, experience: [...resume.experience, {company:"",title:"",location:"",duty:[]}] });
-
-}*/

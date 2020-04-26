@@ -1,8 +1,9 @@
-import React, {  useState, Fragment,useContext } from 'react';
+import React, {  useState, Fragment,useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { ButtonContext } from "../../ButtonContext";
+import { UserContext } from "../../UserContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,7 +36,29 @@ const ExpForm = (props)=>{
     const [company, setCompany] = useState('')
     const [location, setLocation] = useState('')
     const [title, setTitle] = useState('')
-    const [buttons] = useContext(ButtonContext)
+    const [buttons] = useContext(ButtonContext);
+    const [user] = useContext(UserContext)
+
+    useEffect(()=>{
+      if(user){
+        let test = {
+          company:props.e.company,
+          location:props.e.location,
+          title:props.e.title,
+          duty:props.e.duty
+        };
+        setCompany(test.company)
+        setLocation(test.location)
+        setTitle(test.title)
+        setDuty(test.duty)
+      } else {
+        setCompany('')
+        setLocation('')
+        setTitle('')
+        setDuty([])
+      }
+    },[user])
+
 
     const handleChange = (event) => {
       event.preventDefault();
@@ -74,7 +97,7 @@ const ExpForm = (props)=>{
 
     return(
      <section>
-         {edit && buttons?<form className={classes.form} onSubmit={(event)=>{event.preventDefault();props.edit(props.i,company,location,title,duty);setEdit(!edit)}}>
+         {edit && buttons?<form className={classes.form} onSubmit={(event)=>{event.preventDefault();props.edit(props.i,company,title,location,duty);setEdit(!edit)}}>
          <TextField 
           id="company-textArea"
           label="Company"

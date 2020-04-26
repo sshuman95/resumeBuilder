@@ -15,11 +15,27 @@ app.use(function(req, res, next) {
           next();
 });
 
-//Store Functions
 
-app.get('/test',(req,res)=>{
-    res.send("Hello")
-})
+app.get('/login',(req,res)=>{
+  let test = []
+  admin.firestore().collection('users').get()
+        .then(data =>{
+            data.forEach(doc=>{
+              if(doc.data().userId === req.body.key){
+                test.push(doc.data())
+              }
+            })
+        })
+        .then(()=>{
+          res.json(test)
+        })
+        .catch(error=>{
+          res.json({
+            error:error.message
+          })
+        })
+});
+
 
 
 app.post('/createResume',(req,res)=>{
@@ -29,20 +45,45 @@ app.post('/createResume',(req,res)=>{
         education:req.body.education,
         experience:req.body.experience,
     };
+        admin.firestore().collection('users').get()
+        .then(data =>{
+            data.forEach(doc=>{
+              if(doc.data().userId === req.body.key){
+                admin.firestore().collection('users').doc(doc.id).update(resume);
+              }
+            });
+        })
+        .catch(error=>{
+          res.json({
+            error:error.message
+          })
+        })
 
-    admin.firestore()
-    .collection('test')
-    .add(resume)
-    .then(doc=>{
-        res.json({message:`document ${doc.id} created successfully`});
-    })
-    .catch(err=>{
-        res.status(500).json({
-            error:'something went wrong'
-        });
-        console.error(err)
-    })
 })
+
+
+app.post('/signup',(req,res)=>{
+    admin.auth().createUser({
+        email: req.body.email,
+        password: req.body.phone,
+      })
+      .then(function(userRecord) {
+        // See the UserRecord reference doc for the contents of userRecord.
+        admin.firestore()
+            .collection('users')
+            .add({
+                email:userRecord.email,
+                userId:userRecord.uid
+            })
+            res.json({message:`User created successfully`});
+      })
+      .catch(function(error) {
+        res.json({
+          error:error.message
+        })
+      });
+});
+
 
 exports.api = functions.https.onRequest(app);
 

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import EduForm from "./eduForm";
@@ -41,10 +41,15 @@ const Education = ()=>{
 }
 
 const editEdu = (i,org, date, details) =>{
-resume.education[i].organization = org;
-resume.education[i].date = date;
-resume.education[i].details = details;
-setResume(resume)
+    let edu = resume;
+    edu.education[i].organization = org;
+    edu.education[i].date = date;
+    edu.education[i].details = details;
+    setResume(resume)
+}
+
+const editOrg = (i, org) =>{
+console.log(org)
 }
 
   return(
@@ -53,10 +58,10 @@ setResume(resume)
               {resume.education.length!==0?resume.education.map((e,i)=>{
                   return(
                    
-                    <EduForm key={i} e={e} i={i} edit={editEdu}/>
+                    <EduForm key={i} e={e} i={i}  editOrg={editOrg} edit={editEdu}/>
                     )
               }):<h1>Add Education</h1>}
-         {buttons?<Button className={classes.btn} variant="contained" color="primary" type="button" onClick={addEdu}>
+         {buttons?<Button className={classes.btn}  variant="contained" color="primary" type="button" onClick={addEdu}>
               Add Education
           </Button>:''}
           

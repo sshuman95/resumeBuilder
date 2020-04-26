@@ -1,8 +1,10 @@
-import React, { useContext, useState, Fragment } from 'react';
+import React, { useContext, useState, Fragment, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { ButtonContext } from "../../ButtonContext";
+import { UserContext } from "../../UserContext";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,7 +35,24 @@ const EduForm = (props)=>{
     const [organization, setOrganization] = useState('')
     const [date, setDate] = useState('')
     const [details, setDetails] = useState('')
-   
+    const [user] = useContext(UserContext)
+
+    useEffect(()=>{
+      if(user){
+        let test = {
+          organization:props.e.organization,
+          date:props.e.date,
+          details:props.e.details
+        };
+        setOrganization(test.organization)
+        setDate(test.date)
+        setDetails(test.details)
+      } else {
+        setOrganization('')
+        setDate('')
+        setDetails('')
+      }
+    },[user])
 
     const handleEdit = (event) => {
         event.preventDefault();
@@ -60,7 +79,7 @@ const EduForm = (props)=>{
           placeholder="Placeholder"
           multiline
           name="organization"
-          onChange={handleOrganizationChange} 
+          onChange={handleOrganizationChange}
           value={organization}
           />
           <TextField 
