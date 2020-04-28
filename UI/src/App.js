@@ -5,11 +5,8 @@ import { ButtonProvider } from "./Components/Resume/ButtonContext";
 import { ButtonController } from "./Components/ButtonController/buttonController";
 import { ResumeProvider } from "./Components/Resume/ResumeContext";
 import { UserProvider } from "./Components/Resume/UserContext";
-
-import Save from "./Components/Save/save";
-import Login from './Components/User/login';
+import SignUp from './Components/User/signup';
 import axios from "axios";
-
 axios.defaults.baseURL = 'https://us-central1-free-resume-builder.cloudfunctions.net/api'
 
 function App() {
@@ -21,9 +18,9 @@ function App() {
       <header className="App-header">
         <h2>Free Resume Builder</h2>
         <h3>No Sign-up Required</h3>
-        <Login/>
+        <SignUp/>
         <ButtonController/>
-        <Save/>
+
       </header>
       <main>
         <article>

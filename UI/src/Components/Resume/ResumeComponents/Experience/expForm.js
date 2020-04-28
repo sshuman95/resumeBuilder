@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { ButtonContext } from "../../ButtonContext";
-import { UserContext } from "../../UserContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
 
   },
   btn:{
-    marginBottom:5,
     width:170
   }
 }));
@@ -37,10 +35,9 @@ const ExpForm = (props)=>{
     const [location, setLocation] = useState('')
     const [title, setTitle] = useState('')
     const [buttons] = useContext(ButtonContext);
-    const [user] = useContext(UserContext)
 
     useEffect(()=>{
-      if(user){
+      if(props.user){
         let test = {
           company:props.e.company,
           location:props.e.location,
@@ -52,12 +49,12 @@ const ExpForm = (props)=>{
         setTitle(test.title)
         setDuty(test.duty)
       } else {
-        setCompany('')
-        setLocation('')
-        setTitle('')
-        setDuty([])
+        setCompany(props.e.company)
+        setLocation(props.e.location)
+        setTitle(props.e.title)
+        setDuty(props.e.duty)
       }
-    },[user])
+    },[props.user,props.e.company,props.e.location,props.e.title,props.e.duty])
 
 
     const handleChange = (event) => {
@@ -76,6 +73,15 @@ const ExpForm = (props)=>{
         return
       }
   }
+
+  const deleteDuty = (event,i) => {
+    event.preventDefault();
+    let dutyArr = duty;
+
+    let test = dutyArr.filter((data,index)=>index !== i);
+    setDuty(test)
+
+}
 
     const handleEdit = (event) => {
         event.preventDefault();
@@ -138,9 +144,12 @@ const ExpForm = (props)=>{
             Add Duty
           </Button>
            <ul>
-            {duty.map(d=>{
+            {duty.map((d,i)=>{
               return (
-                <li>{d}</li>
+                <div key={Math.random()}>
+                <li >{d}</li>
+                <button onClick={(e)=>{deleteDuty(e,i)}}>x</button>
+                </div>
               )
             })}
          </ul>
@@ -149,12 +158,12 @@ const ExpForm = (props)=>{
         </Button>
           </form>:
           <Fragment>
-          <h3>{props.e.company || "Company goes here"} - {props.e.location || "Location goes here"} </h3>
-          <h5>{props.e.title || "Job Title goes here"}</h5>
+          <h3>{props.e.company || "Company goes here"} - {props.e.title || "Title goes here"} </h3>
+          <h5>{props.e.location || "Location goes here"}</h5>
           <ul>
             {props.e.duty.map(d=>{
               return (
-                <li>{d}</li>
+                <li key={Math.random()}>{d}</li>
               )
             })}
          </ul>

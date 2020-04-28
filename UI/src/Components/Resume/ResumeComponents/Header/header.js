@@ -6,6 +6,7 @@ import { UserContext } from "../../UserContext";
 
  import { ButtonContext } from "../../ButtonContext";
  import { ResumeContext } from "../../ResumeContext";
+ import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,9 +48,9 @@ const Header = ()=>{
      };
      setInputs(test)
    } else {
-     setInputs({})
+     return
    }
- },[user])
+ },[user,resume.header.name,resume.header.email,resume.header.phone,resume.header.address])
 
  
     const handleInputChange = (event) => {
@@ -72,6 +73,17 @@ const Header = ()=>{
         resumeHead.header.address = inputs.address;
         setResume(resumeHead)
         setEdit(!edit)
+        if(user){
+            axios.post(`/saveHeader/${resume.userId}`,{
+              header:resumeHead.header
+            })
+            .then(res=>{
+              console.log(res)
+            })
+            .catch(error=>{
+              console.log(error)
+            })
+        }
       }
 
 

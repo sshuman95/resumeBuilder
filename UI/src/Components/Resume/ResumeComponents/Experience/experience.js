@@ -4,6 +4,8 @@ import Button from '@material-ui/core/Button';
 import ExpForm from "./expForm";
 import { ButtonContext } from "../../ButtonContext";
 import { ResumeContext } from "../../ResumeContext";
+import { UserContext } from "../../UserContext";
+import axios from "axios"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
 
   },
  btn:{
-     width:170
+     width:170,
+     marginTop:5
  }
 }));
 
@@ -32,6 +35,8 @@ const Experience = ()=>{
     const [exp, setExp] = useState([]);
     const [buttons] = useContext(ButtonContext);
     const [resume,setResume] =useContext(ResumeContext);
+    const [user] = useContext(UserContext)
+
     const addExp = (event) => {
             event.persist();
             setResume({ ...resume, experience: [...resume.experience, {company:"",title:"",location:"",duty:[]}] });
@@ -44,6 +49,17 @@ const Experience = ()=>{
         newExp.experience[i].location = location;
         newExp.experience[i].duty = duty;
         setResume(newExp)
+        if(user){
+            axios.post(`/saveExperience/${resume.userId}`,{
+                experience:newExp.experience
+            })
+            .then(res=>{
+              console.log(res)
+            })
+            .catch(error=>{
+              console.log(error)
+            })
+        }
         }
 
     const addDuty = (i,val) =>{
@@ -57,21 +73,44 @@ const Experience = ()=>{
     }
 
 
+    const deleteExp = (i) =>{
+        let expToRemove = resume.experience
+        expToRemove.splice(i,1);
+        setResume({ ...resume, experience: expToRemove});
+        if(user){
+          axios.post(`/saveExperience/${resume.userId}`,{
+            experience:expToRemove
+            })
+            .then(res=>{
+              console.log(res.data)
+            })
+            .catch(error=>{
+              console.log(error)
+            })
+        }
+      }
+      
+      
+
 
     return(
         <article className='exp'>
         <h2>Experience</h2>
-        <section>
-                {resume.experience.length>0?resume.experience.map((e,i)=>{
-                    return(
-                            <ExpForm buttons={buttons} e={e} i={i} add={addDuty} edit={editExp}/>)
-                }):<h1>Add Experience</h1>}
-        </section>
-            {buttons?
+        {buttons?
             <Button className={classes.btn}  variant="contained" color="primary" type="button" onClick={addExp}>
                 Add Experience
             </Button>:
             ""}
+        <section>
+                {resume.experience.length>0?resume.experience.map((e,i)=>{
+                    return(
+                        <div key={Math.random()}>
+                        <ExpForm buttons={buttons} user={user} e={e} i={i} add={addDuty} edit={editExp}/>
+                        {buttons?<Button className={classes.btn} variant="contained" style={{backgroundColor:'red',color:"white"}} type="button" onClick={(event)=>{event.preventDefault();deleteExp(i)}}>Delete</Button>:""}
+                        </div>)
+                }):<h1>Add Experience</h1>}
+        </section>
+          
         </article>
     )
 };

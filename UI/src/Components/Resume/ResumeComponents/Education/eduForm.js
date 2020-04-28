@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { ButtonContext } from "../../ButtonContext";
-import { UserContext } from "../../UserContext";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -20,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
 
   },
   btn:{
-    width:155
+    width:155,
+    marginTop:5
   }
 }));
 
@@ -35,10 +35,9 @@ const EduForm = (props)=>{
     const [organization, setOrganization] = useState('')
     const [date, setDate] = useState('')
     const [details, setDetails] = useState('')
-    const [user] = useContext(UserContext)
 
     useEffect(()=>{
-      if(user){
+      if(props.user){
         let test = {
           organization:props.e.organization,
           date:props.e.date,
@@ -48,11 +47,11 @@ const EduForm = (props)=>{
         setDate(test.date)
         setDetails(test.details)
       } else {
-        setOrganization('')
-        setDate('')
-        setDetails('')
+        setOrganization(props.e.organization)
+        setDate(props.e.date)
+        setDetails(props.e.details)
       }
-    },[user])
+    },[props.user,props.e.organization,props.e.date,props.e.details])
 
     const handleEdit = (event) => {
         event.preventDefault();
@@ -107,7 +106,7 @@ const EduForm = (props)=>{
           <Fragment>
           <h3>{props.e.organization || "Add an organization"}</h3>
           <h5>{props.e.date || "Add a date"}</h5>
-          <h3>{props.e.details || "Add details"}</h3> 
+          <h3>{props.e.details || "Add details"}</h3>
           {buttons?<Button className={classes.btn} variant="contained" color="primary" onClick={handleEdit} type="button">
             Edit Education
         </Button>:""}

@@ -16,12 +16,12 @@ app.use(function(req, res, next) {
 });
 
 
-app.get('/login',(req,res)=>{
+app.get('/login/:key',(req,res)=>{
   let test = []
   admin.firestore().collection('users').get()
         .then(data =>{
             data.forEach(doc=>{
-              if(doc.data().userId === req.body.key){
+              if(doc.data().userId === req.params.key){
                 test.push(doc.data())
               }
             })
@@ -38,20 +38,19 @@ app.get('/login',(req,res)=>{
 
 
 
-app.post('/createResume',(req,res)=>{
-    const resume = {
-        header:req.body.header,
-        skills:req.body.skills,
-        education:req.body.education,
-        experience:req.body.experience,
-    };
+app.post('/saveHeader/:key',(req,res)=>{
         admin.firestore().collection('users').get()
         .then(data =>{
             data.forEach(doc=>{
-              if(doc.data().userId === req.body.key){
-                admin.firestore().collection('users').doc(doc.id).update(resume);
+              if(doc.data().userId === req.params.key){
+                admin.firestore().collection('users').doc(doc.id).update({
+                    header:req.body.header
+                });
               }
             });
+        })
+        .then(()=>{
+          res.json({message:'Header edit successful'})
         })
         .catch(error=>{
           res.json({
@@ -59,13 +58,86 @@ app.post('/createResume',(req,res)=>{
           })
         })
 
-})
+});
+
+
+
+app.post('/saveSkills/:key',(req,res)=>{
+  admin.firestore().collection('users').get()
+  .then(data =>{
+      data.forEach(doc=>{
+        if(doc.data().userId === req.params.key){
+          admin.firestore().collection('users').doc(doc.id).update({
+              skills:req.body.skills
+          });
+        }
+      });
+  })
+  .then(()=>{
+    res.json({message:'Skills edit successful'})
+  })
+  .catch(error=>{
+    res.json({
+      error:error.message
+    })
+  })
+
+});
+
+
+
+
+app.post('/saveEducation/:key',(req,res)=>{
+  admin.firestore().collection('users').get()
+  .then(data =>{
+      data.forEach(doc=>{
+        if(doc.data().userId === req.params.key){
+          admin.firestore().collection('users').doc(doc.id).update({
+              education:req.body.education
+          });
+        }
+      });
+  })
+  .then(()=>{
+    res.json({message:'Education edit successful'})
+  })
+  .catch(error=>{
+    res.json({
+      error:error.message
+    })
+  })
+
+});
+
+app.post('/saveExperience/:key',(req,res)=>{
+  admin.firestore().collection('users').get()
+  .then(data =>{
+      data.forEach(doc=>{
+        if(doc.data().userId === req.params.key){
+          admin.firestore().collection('users').doc(doc.id).update({
+              experience:req.body.experience
+          });
+        }
+      });
+  })
+  .then(()=>{
+    res.json({message:'Experience edit successful'})
+  })
+  .catch(error=>{
+    res.json({
+      error:error.message
+    })
+  })
+
+});
+
+
 
 
 app.post('/signup',(req,res)=>{
     admin.auth().createUser({
         email: req.body.email,
-        password: req.body.phone,
+        password: req.body.password,
       })
       .then(function(userRecord) {
         // See the UserRecord reference doc for the contents of userRecord.
@@ -73,7 +145,11 @@ app.post('/signup',(req,res)=>{
             .collection('users')
             .add({
                 email:userRecord.email,
-                userId:userRecord.uid
+                userId:userRecord.uid,
+                header:{name:"",email:"",phone:"",address:""},
+                skills:[],
+                education:[],
+                experience:[]
             })
             res.json({message:`User created successfully`});
       })
